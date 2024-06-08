@@ -9,7 +9,8 @@ const upload = multer({ storage });
 router
   .route("/images")
   .get(imagesController.getAllImages)
-  .post(upload.single("image"), imagesController.uploadImage);
+  .post(upload.single("image"), imagesController.uploadImage)
+  .put(upload.single("image"), imagesController.updateImage);
 
 router
   .route("/images/:id")
