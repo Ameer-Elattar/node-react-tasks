@@ -16,4 +16,5 @@ router
   .route("/images/:id")
   .get(imagesController.getImageByID)
   .delete(imagesController.deleteImageByID);
+
 module.exports = router;

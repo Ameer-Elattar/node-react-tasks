@@ -1,4 +1,5 @@
 const { bucket, firestore } = require("../model/firebaseConfigration");
+
 exports.uploadImage = async (req, res, next) => {
   if (!req.file) {
     return res.status(404).json({ data: "not image found" });
@@ -144,3 +145,4 @@ exports.updateImage = async (req, res, next) => {
     next(error);
   }
 };
+

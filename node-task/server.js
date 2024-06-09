@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv").config();
 const server = express();
 const imageRoute = require("./routes/imagesRoutes");
+const shorterLinkRoute = require("./routes/shorterLinksRoute");
 
 const port = process.env.PORT || 8080;
 server.listen(port, () => {
@@ -13,9 +14,15 @@ server.use((req, res, next) => {
   console.log(req.url, req.method);
   next();
 });
+
+//parsing form data and req body
+server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
+
+
 // routes middleware
 server.use(imageRoute);
+server.use(shorterLinkRoute);
 
 // notfound  middelware
 server.use((req, res, next) => {
