@@ -1,3 +1,23 @@
+## Project Setup Instructions
+
+### Firebase Configuration
+
+1. **Firebase Project Setup:**
+   - Ensure you have created a project on Firebase.
+   - Create a Firestore database and authentication.
+   - Set the rules for both Firestore and storage to allow read and write access.
+
+ ### Environment Variable Setup: 
+ 
+    - from project overviw create a new web app 
+     - set up the enviroment variables from the provided  firebaseConfig object 
+  
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
