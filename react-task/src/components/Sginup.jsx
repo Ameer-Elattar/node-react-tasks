@@ -32,18 +32,19 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
 export function Signup() {
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
+
+
   const navigate = useNavigate();
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log(data.get("email"), data.get("password"));
     createUserWithEmailAndPassword(data.get("email"), data.get("password"));
     navigate("/signin");
   };

@@ -20,6 +20,8 @@ import { Link } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ImageIcon from "@mui/icons-material/Image";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -74,14 +76,27 @@ export function MainLayouts() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
   const [signOut] = useSignOut(auth);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.userSlice);
+
+
+  useEffect(() => {
+    if (!data.user) {
+      navigate("/signin");
+    }
+  }, [data.user]);
   const handelLogOut = async () => {
     let success = await signOut();
     if (success) {
+      dispatch({ type: "rmUser", payload: null });
       navigate("/signin");
     }
   };
+
+  
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: "flex" }}>

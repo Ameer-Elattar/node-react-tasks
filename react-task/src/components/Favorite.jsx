@@ -7,21 +7,39 @@ import { Box, Grid } from "@mui/material";
 import { useEffect } from "react";
 import { getFavoriteImages } from "../API/firestoreDB";
 import { useState } from "react";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 
 export function Favorite() {
   const [Images, setImages] = useState([]);
+  const [fetchError, setFetchError] = useState(false);
 
   useEffect(() => {
     (async () => {
-      const res = await getFavoriteImages();
-      setImages(res);
+      try {
+        const res = await getFavoriteImages();
+        setImages(res);
+      } catch (error) {
+        console.log(error);
+        setFetchError(true);
+      }
     })();
   }, []);
   return (
     <>
       <Box m={3}>
         <Grid container spacing={1}>
-          {Images &&
+          {fetchError ? (
+            <Alert
+              severity="error"
+              sx={{ width: "100%" }}
+              style={{ fontSize: "40px", fontWeight: "bold" }}
+            >
+              <AlertTitle style={{ fontSize: "30px" }}>Error</AlertTitle>
+              Couldn't fetch data from server
+            </Alert>
+          ) : (
+            Images &&
             Images.map((image, index) => {
               return (
                 <Grid item key={index}>
@@ -39,7 +57,8 @@ export function Favorite() {
                   </Card>
                 </Grid>
               );
-            })}
+            })
+          )}
         </Grid>
       </Box>
     </>

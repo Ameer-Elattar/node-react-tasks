@@ -16,6 +16,8 @@ import {
   useSignInWithGoogle,
 } from "react-firebase-hooks/auth";
 import { auth } from "../config/firebase";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 function Copyright(props) {
   return (
@@ -35,29 +37,37 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
 export function Signin() {
   const [signInWithEmailAndPassword, user, error] =
     useSignInWithEmailAndPassword(auth);
+
   const [signInWithGoogle, guser, gerror] = useSignInWithGoogle(auth);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleSubmit = (event) => {
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-    signInWithEmailAndPassword(data.get("email"), data.get("password"));
-    if (!error) {
-      navigate("/");
-    }
+    await signInWithEmailAndPassword(data.get("email"), data.get("password"));
   };
+  if (user || guser) {
+    navigate("/");
+  }
+
+  
+  useEffect(() => {
+    if (user) {
+      dispatch({ type: "setUser", payload: user.user.email });
+    } else if (guser) {
+      dispatch({ type: "setUser", payload: guser.user.email });
+    }
+  }, [user, guser]);
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">

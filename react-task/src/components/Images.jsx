@@ -11,10 +11,15 @@ import { useEffect } from "react";
 import { getAllImages } from "../API/pexelsAPI";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { addImageToFavorite } from "../API/firestoreDB";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import LinearProgress from "@mui/material/LinearProgress";
 
 export function Images() {
   const [Images, setImages] = useState([]);
   const [fetchError, setFetchError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     (async () => {
       try {
@@ -24,7 +29,7 @@ export function Images() {
           pics.push({ name: photo.alt, src: photo.src.original });
         });
         setImages(pics);
-        // console.log(pics);
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
         setFetchError(true);
@@ -34,13 +39,26 @@ export function Images() {
 
   const handelAddTofavorite = (image) => {
     addImageToFavorite(image);
-    console.log(image);
   };
   return (
     <>
       <Box m={3}>
         <Grid container spacing={1}>
-          {Images &&
+          {isLoading ? (
+            <Box sx={{ width: "100%" }}>
+              <LinearProgress />
+            </Box>
+          ) : fetchError ? (
+            <Alert
+              severity="error"
+              sx={{ width: "100%" }}
+              style={{ fontSize: "40px", fontWeight: "bold" }}
+            >
+              <AlertTitle style={{ fontSize: "30px" }}>Error</AlertTitle>
+              Couldn't fetch data from server
+            </Alert>
+          ) : (
+            Images &&
             Images.map((image, index) => {
               return (
                 <Grid item key={index}>
@@ -70,7 +88,8 @@ export function Images() {
                   </Card>
                 </Grid>
               );
-            })}
+            })
+          )}
         </Grid>
       </Box>
     </>
