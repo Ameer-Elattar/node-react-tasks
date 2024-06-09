@@ -8,16 +8,18 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Button from "@mui/material/Button";
 
-import { Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import { useSignOut } from "react-firebase-hooks/auth";
 import { auth } from "../config/firebase";
 import { useNavigate } from "react-router-dom";
-
+import { Link } from "@mui/material";
+import LogoutIcon from "@mui/icons-material/Logout";
+import ImageIcon from "@mui/icons-material/Image";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -127,7 +129,22 @@ export function MainLayouts() {
             </IconButton>
           </Toolbar>
           <Divider />
-          <Button variant="outlined" sx={{ mt: 3 }} onClick={handelLogOut}>
+          <Button variant="outlined" sx={{ mt: 3 }} startIcon={<ImageIcon />}>
+            <NavLink to="/images">Images</NavLink>
+          </Button>
+          <Button
+            variant="outlined"
+            sx={{ mt: 3 }}
+            startIcon={<FavoriteBorderIcon />}
+          >
+            <NavLink to="/favorite">Favorite</NavLink>
+          </Button>
+          <Button
+            variant="outlined"
+            sx={{ mt: 3 }}
+            onClick={handelLogOut}
+            startIcon={<LogoutIcon />}
+          >
             LogOut
           </Button>
         </Drawer>
